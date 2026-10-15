@@ -8,6 +8,29 @@ const ruleTester = new RuleTester();
 
 ruleTester.run('no-relative-packages', rule, {
   valid: [
+    ...['some-package', 'some-package/subpath', '@scope/package', '@scope/package/subpath', 'fs', 'node:fs', '/absolute/path', '#alias', '.hidden', '...', '', 'https://example.com/module.js'].map((specifier) => test({
+      code: `import ${JSON.stringify(specifier)}`,
+      settings: { 'import/resolver': testFilePath('./throwing-resolver.js') },
+    })),
+    ...['export * from "some-package"', 'export { foo } from "@scope/package"', 'require("some-package")'].map((code) => test({
+      code,
+      options: [{ commonjs: true }],
+      settings: { 'import/resolver': testFilePath('./throwing-resolver.js') },
+    })),
+    ...['.', './', './index', './index.js'].map((specifier) => test({
+      code: `import ${JSON.stringify(specifier)}`,
+      filename: testFilePath('./package-named/index.js'),
+    })),
+    test({
+      code: 'import foo from "../package-named"',
+      filename: testFilePath('./package/index.js'),
+      settings: { 'import/internal-regex': '^\\.' },
+    }),
+    test({
+      code: 'import foo from "./package-named"',
+      filename: testFilePath('./bar.js'),
+      settings: { 'import/internal-regex': '^\\.' },
+    }),
     test({
       code: 'import foo from "./index.js"',
       filename: testFilePath('./package/index.js'),
@@ -39,6 +62,13 @@ ruleTester.run('no-relative-packages', rule, {
   ],
 
   invalid: [
+    ...['..', '.', '../package-named', './package-named', '..\\parent', '.\\sibling'].map((specifier) => test({
+      code: `import ${JSON.stringify(specifier)}`,
+      filename: testFilePath('./package/index.js'),
+      settings: { 'import/resolver': testFilePath('./throwing-resolver.js') },
+      errors: [{ message: /^Resolve error: Unexpected module resolution:/ }],
+      output: null,
+    })),
     test({
       code: 'import foo from "./package-named"',
       filename: testFilePath('./bar.js'),

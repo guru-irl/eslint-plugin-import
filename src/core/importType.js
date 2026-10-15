@@ -46,15 +46,15 @@ function isModuleMain(name) {
   return name && moduleMainRegExp.test(name);
 }
 
-function isRelativeToParent(name) {
+export function isRelativeToParent(name) {
   return (/^\.\.$|^\.\.[\\/]/).test(name);
 }
 const indexFiles = ['.', './', './index', './index.js'];
-function isIndex(name) {
+export function isIndex(name) {
   return indexFiles.indexOf(name) !== -1;
 }
 
-function isRelativeToSibling(name) {
+export function isRelativeToSibling(name) {
   return (/^\.[\\/]/).test(name);
 }
 

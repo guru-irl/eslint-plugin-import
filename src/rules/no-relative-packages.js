@@ -4,7 +4,7 @@ import readPkgUp from 'eslint-module-utils/readPkgUp';
 import { getPhysicalFilename } from 'eslint-module-utils/contextCompat';
 import resolve from 'eslint-module-utils/resolve';
 import moduleVisitor, { makeOptionsSchema } from 'eslint-module-utils/moduleVisitor';
-import importType from '../core/importType';
+import importType, { isRelativeToParent, isIndex, isRelativeToSibling } from '../core/importType';
 import docsUrl from '../docsUrl';
 
 /** @param {string} filePath */
@@ -21,6 +21,10 @@ function findNamedPackage(filePath) {
 }
 
 function checkImportForRelativePackage(context, importPath, node, moduleSystem) {
+  if (!isRelativeToParent(importPath) && !isIndex(importPath) && !isRelativeToSibling(importPath)) {
+    return;
+  }
+
   const potentialViolationTypes = ['parent', 'index', 'sibling'];
   if (potentialViolationTypes.indexOf(importType(importPath, context)) === -1) {
     return;
