@@ -14,7 +14,7 @@ This change log adheres to standards from [Keep a CHANGELOG](https://keepachange
 - export a top-level `meta` object, matching the declared types, and strengthen the type tests ([#3169], thanks [@ljharb])
 
 ### Fixed
-- [`no-relative-packages`]: avoid resolving imports that cannot be relative package imports (thanks [@guru-irl])
+- [`no-relative-packages`]: avoid resolving imports that cannot be relative package imports ([#3298], thanks [@guru-irl])
 - [`no-duplicates`]: fix `prefer-inline` autofix producing invalid syntax when an identifier named `from` is imported ([#3236], thanks [@DukeDeSouth] [@Quantaly])
 - [`no-duplicates`]: avoid false positives for TypeScript namespace and default type imports that cannot be merged ([#3195], thanks [@sjh9714] [@robyoder])
 - ExportMap: resolve export * as ns re-exports under modern parsers ([#3250], thanks [@rasmi] [@JounQin] [@butterybread])
@@ -1214,6 +1214,7 @@ for info on changes for earlier releases.
 
 [`memo-parser`]: ./memo-parser/README.md
 
+[#3298]: https://github.com/import-js/eslint-plugin-import/pull/3298
 [#3284]: https://github.com/import-js/eslint-plugin-import/pull/3284
 [#3283]: https://github.com/import-js/eslint-plugin-import/pull/3283
 [#3282]: https://github.com/import-js/eslint-plugin-import/pull/3282
